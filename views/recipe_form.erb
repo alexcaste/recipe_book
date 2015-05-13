@@ -1,0 +1,29 @@
+<h1>Create a new recipe!</h1>
+<div class="form group">
+  <form action="/recipe_form" method="post">
+    <input id="rec_name" name="rec_name" placeholder="Recipe Name"><p></p>
+    <textarea class="form-control" id="instructions" name="instructions" placeholder="Add Instructions" rows ="10"></textarea>
+    <% if @categories.any? %>
+      <label for="category">Select a Category for this Recipe:</label>
+        <select id='category' name='category' type='text'>
+          <option value="">None</option>
+          <% @categories.each() do |category| %>
+            <option value="<%= category.id()%>"> <%= category.categ_name %> </option>
+          <% end %>
+      </select>
+    <% end %>
+    <% if @ingredients.any? %>
+      <h5>Select ingredients:</h5>
+      <% @ingredients.each do |ingredient| %>
+        <div class="checkbox">
+          <label>
+          <input type="checkbox" name="ingredient_ids[]" value="<%= ingredient.id %>"><%= ingredient.ing_name %>
+          </label>
+        </div>
+      <% end %>
+    <% end %>
+
+    <button type="submit" class="btn btn-success">Add</button>
+
+  </form>
+</div>

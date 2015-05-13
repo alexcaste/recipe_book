@@ -1,11 +1,12 @@
 require 'spec_helper'
 
+
 describe('#recipes_categories_join') do
   it("verifies the association of one recipe with many categories") do
-    crappy_foods = Category.create({categ_name: "crappy_foods"})
-    cheeseburger = Recipe.create({rec_name:"cheeseburger"})
-    # crappy_foods.recipes.create({rec_name: "cheeseburger"})
-    expect(crappy_foods.recipes).to(eq([cheeseburger]))
+    crappy_foods = Category.create({categ_name: "Junk Food"})
+    recipe1 = crappy_foods.recipes.create({rec_name: "cheeseburger"})
+    recipe2 = crappy_foods.recipes.create({rec_name: "Hamburger"})
+    expect(crappy_foods.recipes).to(eq([recipe1, recipe2]))
   end
 end
 

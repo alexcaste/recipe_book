@@ -1,30 +1,30 @@
-html,
+<h1>Recipes-R-Us</h1>
 
-body {
-  height: 100%;
-  /* The html and body elements cannot have any padding or margin. */
-}
-
-/* Wrapper for page content to push down footer */
-#wrap {
-  min-height: 100%;
-  height: auto;
-  /* Negative indent footer by its height */
-  margin: 0 auto -60px;
-  /* Pad bottom by footer height */
-  padding: 0 0 60px;
-}
-
-/* Set the fixed height of the footer here */
-#footer {
-  height: 60px;
-  background-color: #d3d3d3;
-}
-
-h1 {
-  padding-bottom: 9px;
-  margin: 40px 0 20px;
-  border-bottom: 1px solid #eee;
-
-  text-align: center;
-}
+<h4 class ="text-center">The only trustworthy source in recipe organization since the Byzantine Empire.</h4>
+<br>
+<h5><u>Recipe Categories</u></h5>
+<% if @categories.any? %>
+<ol>
+  <% @categories.each do |category| %>
+    <li><a href ="/recipes/<%= category.categ_name %>/<%= category.id %>"><%= category.categ_name %></a>
+      &nbsp&nbsp&nbsp&nbsp
+      <span class = "btn-group">
+        <form action = "/category/<%= category.id %>" method = "post">
+          <input name ="_method" type ="hidden" value ="delete">
+          <button type = "submit" class="btn btn-danger">Delete</button>
+        </form>
+      </span>
+      <p></p>
+    </li>
+  <% end %>
+</ol>
+<% else %>
+  <h5>You are a very disorganized chef because you have not categorized anything.</h5>
+<% end %>
+<br>
+<div class="form group">
+  <p><form action="/" method="post">
+    <input id="category" name="category" placeholder="Add new category">
+    <button type="submit" class="btn btn-info">Add</button>
+  </form></p>
+</div>

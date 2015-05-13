@@ -1,0 +1,34 @@
+<% if @category == nil && @ingredient == nil %>
+  <h1>All Recipes</h1>
+<% elsif @category != nil && @ingredient == nil %>
+  <h1>Recipes in <%= @category.categ_name %></h1>
+<% else %>
+  <h1>Recipes using <%= @ingredient.ing_name %></h1>
+<% end %>
+
+<% if @recipes.any? %>
+<ol>
+  <% @recipes.each do |recipe| %>
+  <li><a href ="/recipe/<%= recipe.rec_name %>"><%= recipe.rec_name %></a>
+    &nbsp&nbsp&nbsp&nbsp
+    <span class = "btn-group">
+      <form action = "/recipe/<%= recipe.id %>" method = "post">
+        <input name ="_method" type ="hidden" value ="delete">
+        <button type = "submit" class="btn btn-danger">Delete</button>
+      </form>
+    </span>
+    <p></p>
+  </li>
+  <% end %>
+</ol>
+<% else %>
+
+<br>
+  <h5>No wonder you are such a shitty cook.  You don't have any recipes.</h5>
+<% end %>
+<br>
+<div class="form group">
+  <p><form action="/recipe_form" method="get">
+    <button type="submit" class="btn btn-info">Add Recipe</button>
+  </form></p>
+</div>
