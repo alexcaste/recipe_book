@@ -12,6 +12,13 @@
       <p></p>
     </li>
   <% end %>
+  <br>
+  <div class="form group">
+    <p><form action="/ingredients" method="post">
+      <input id="ingredient" name="ingredient" placeholder="Add new ingredient">
+      <button type="submit" class="btn btn-info">Add</button>
+    </form></p>
+  </div>
 <% else %>
   <h3>Recipes with <%= @ingredient.ing_name %>:</h3>
   <% if @recipes.any? %>

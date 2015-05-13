@@ -59,3 +59,15 @@ get '/ingredients/:ing_name/:id' do
   @recipes = @ingredient.recipes
   erb(:ingredients)
 end
+
+delete '/ingredient/:id' do
+  id = params.fetch("id").to_i
+  @ingredient = Ingredient.find(id)
+  @ingredient.delete
+  redirect '/ingredients'
+end
+
+post '/ingredients' do
+  Ingredient.create({ing_name: params.fetch("ingredient")})
+  redirect '/ingredients'
+end
