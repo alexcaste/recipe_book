@@ -5,11 +5,14 @@
 <% else %>
   <h1>Recipes using <%= @ingredient.ing_name %></h1>
 <% end %>
-
+<a href="/recipes/rating">Sort by Rating?</a>
+<br>
 <% if @recipes.any? %>
 <ol>
   <% @recipes.each do |recipe| %>
-  <li><a href ="/recipe/<%= recipe.rec_name %>/<%= recipe.id %>"><%= recipe.rec_name %></a>
+  <li><a href ="/recipe/<%= recipe.id %>"><%= recipe.rec_name %>:</a>
+    &nbsp&nbsp&nbsp&nbsp
+    Rating: <%= recipe.rating %>
     &nbsp&nbsp&nbsp&nbsp
     <span class = "btn-group">
       <form action = "/recipe/<%= recipe.id %>" method = "post">

@@ -1,0 +1,109 @@
+<input name ="recipe" type ="hidden" value ="<%= @recipe.id %>">
+<h1><%= @recipe.rec_name %></h1>
+<div class="form group">
+  <form action="/recipe/<%= @recipe.id %>" method="post">
+  <input name ="_method" type ="hidden" value ="patch">
+  <label for="rating">Recipe Rating: <%= @recipe.rating %>&nbsp&nbsp&nbsp&nbsp</label>
+  <span class = "btn-group">
+    <select id="rating" name="rating" type="text">
+      <option value="">None</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+    </select>
+  </span>
+  <button type="submit" class="btn btn-info">Update</button>
+  </form>
+</div>
+
+<br>
+<% if @recipe.categories.any? %>
+<h5>Categories <%= @recipe.rec_name %> is in:</h5>
+  <% @recipe.categories.each do |categ| %>
+  <ul>
+    <h6><%= categ.categ_name %>
+    <span class = "btn-group">
+      <form action = "/recipe/<%= categ.id %>/cat" method = "post">
+        <input name ="_method" type ="hidden" value ="delete">
+        <input name ="recipe" type ="hidden" value ="<%= @recipe.id %>">
+        <button type = "submit" class="btn btn-danger">Delete</button>
+      </form>
+    </span>
+    <p></p>
+    </h6>
+  </ul>
+  <% end %>
+<% end %>
+<br>
+<div class="form group">
+  <form action="/recipe/<%= @recipe.id %>" method="post">
+  <input name ="_method" type ="hidden" value ="patch">
+  <label for="category_add">Assign a category to this recipe:</label>
+  <span class = "btn-group">
+    <select id="category_add" name="category_add" type="text">
+      <option value="">None</option>
+      <% @category.each do |category| %>
+        <option value="<%= category.id %>"><%= category.categ_name %></option>
+      <% end %>
+    </select>
+  </span>
+<button type="submit" class="btn btn-info">Add</button>
+</form>
+
+</div>
+
+<br>
+<% if @ingredients.any? %>
+  <h4>Ingredients:</h4>
+  <ul>
+    <% @ing_amount.each do |ing| %>
+      <% ingredient = Ingredient.find(ing[0]) %>
+      <li><a href = "/ingredients/<%= ing[0] %>"><%= ingredient.ing_name %></a>: <%= ing[1] %>
+      &nbsp&nbsp&nbsp&nbsp
+      <span class = "btn-group">
+        <form action = "/recipe/<%= ingredient.id %>/ing" method = "post">
+          <input name ="_method" type ="hidden" value ="delete">
+          <input name ="recipe" type ="hidden" value ="<%= @recipe.id %>">
+          <button type = "submit" class="btn btn-danger">Delete</button>
+        </form>
+      </span>
+      <p></p>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <h4>There are no ingredients listed for this recipe yet.</h4>
+<% end %>
+<% if @all_ing.any? %>
+<div class="form group">
+  <form action="/recipe/<%= @recipe.id %>" method="post">
+  <label for="ingredient_add">Add an ingredient and amount to this recipe:</label>
+  <span class = "btn-group">
+    <select id="ingredient_add" name="ingredient_add" type="text">
+      <option value="">None</option>
+      <% @all_ing.each do |ingredient| %>
+        <option value="<%= ingredient.id %>"><%= ingredient.ing_name %></option>
+      <% end %>
+    </select>
+  </span>
+    <input name ="_method" type ="hidden" value ="patch">
+    <input id="measurement" name="measurement" placeholder="Measurement">
+    <button type="submit" class="btn btn-info">Add</button>
+
+</form>
+<br>
+</div>
+  <% else %>
+  <h3><a href ="/ingredients">Add ingredient to recipe book</a></h3>
+  <% end %>
+  <div class="form group">
+  <form action = "/recipe/<%= @recipe.id %>" method = "post">
+    <input name ="_method" type ="hidden" value ="patch">
+  <textarea class="form-control" id="instructions" name="instructions" rows ="10"><%= @recipe.rec_inst %></textarea>
+  <p> </p>
+  <button type="submit" class="btn btn-info">Update Instructions</button>
+  </form>
+  </div>
+  <br>

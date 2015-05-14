@@ -34,6 +34,14 @@ get '/recipes' do
   erb(:recipes)
 end
 
+get '/recipes/rating' do
+  @recipes = Recipe.all
+  @recipes = @recipes.order(rating: :asc)
+  @category = nil
+  @ingredient = nil
+  erb(:recipes)
+end
+
 get '/recipes/:ing_name/:id' do
   @category = nil
   @recipes = @ingredient.recipes
@@ -50,6 +58,9 @@ end
 post '/recipe_form' do
   ingredients =[]
   rec_name = params.fetch('rec_name')
+  if rec_name == ""
+    redirect '/recipe_form'
+  end
   rec_inst = params.fetch('instructions')
   category = (params.fetch('category').to_i)
   if category == 0
@@ -71,8 +82,6 @@ post '/recipe_form' do
   end
   redirect ('/recipe/'.concat(recipe.id.to_s))
 end
-
-
 
 
 get '/ingredients' do
@@ -105,7 +114,7 @@ get '/recipe/:id' do
   @ingredients = @recipe.ingredients
   @all_ing = Ingredient.all
   @ing_amount = Amount.ing_amounts(@recipe.id)
-
+  @category = Category.all
   erb(:recipe)
 end
 
@@ -114,4 +123,53 @@ delete '/recipe/:id' do
   @recipe = Recipe.find(id)
   @recipe.delete
   redirect '/recipes'
+end
+
+patch '/recipe/:id' do
+  recipe_id = params.fetch('id').to_i
+  recipe = Recipe.find(recipe_id)
+  if params[:rating]
+    rating = params.fetch('rating')
+    if rating != ""
+      rating = rating.to_i
+      recipe.update({rating: rating})
+    end
+  end
+  if params[:category_add]
+    category = params.fetch('category_add').to_i
+    if category != 0
+      category = Category.find(category)
+      recipe.categories.push(category)
+    end
+  end
+  if params[:ingredient_add] && params[:measurement]
+    ingredient = params.fetch('ingredient_add').to_i
+    amount = params.fetch('measurement')
+    if ingredient != 0 && amount != ""
+      Amount.create(recipe_id: recipe_id, ingredient_id: ingredient, measure: amount)
+    end
+  end
+  if params[:instructions]
+    instructions = params.fetch('instructions')
+    recipe.update(rec_inst: instructions)
+  end
+  redirect ('/recipe/'.concat(recipe.id.to_s))
+end
+
+delete '/recipe/:id/cat' do
+  recipe_id = params.fetch("recipe")
+  category_id = params.fetch("id").to_i
+  recipe = Recipe.find(recipe_id)
+  category = Category.find(category_id)
+  recipe.categories.delete(category)
+  redirect ('/recipe/'.concat(recipe_id.to_s))
+end
+
+delete '/recipe/:id/ing' do
+  recipe_id = params.fetch("recipe")
+  ingredient_id = params.fetch("id").to_i
+  recipe = Recipe.find(recipe_id)
+  ingredient = Ingredient.find(ingredient_id)
+  recipe.ingredients.delete(ingredient)
+  redirect ('/recipe/'.concat(recipe_id.to_s))
 end
