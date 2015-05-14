@@ -105,7 +105,16 @@ delete '/ingredient/:id' do
 end
 
 post '/ingredients' do
-  Ingredient.create({ing_name: params.fetch("ingredient")})
+  all_ingredients = Ingredient.all
+  matches = false
+  all_ingredients.each() do |ing|
+    if ing.ing_name == params.fetch('ingredient')
+      matches = true
+    end
+  end
+  if !matches
+    Ingredient.create({ing_name: params.fetch('ingredient')})
+  end
   redirect '/ingredients'
 end
 
