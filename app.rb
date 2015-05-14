@@ -9,7 +9,16 @@ get '/' do
 end
 
 post '/' do
-  Category.create({categ_name: params.fetch("category")})
+  all_categories = Category.all
+  matches = false
+  all_categories.each() do |cat|
+    if cat.categ_name == params.fetch('category')
+      matches = true
+    end
+  end
+  if !matches
+    Category.create({categ_name: params.fetch("category")})
+  end
   redirect '/'
 end
 
