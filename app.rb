@@ -42,10 +42,10 @@ get '/recipes/rating' do
   erb(:recipes)
 end
 
-get '/recipes/:ing_name/:id' do
+get '/recipes/:id' do
   @category = nil
+  @ingredient = Ingredient.find(params.fetch('id').to_i)
   @recipes = @ingredient.recipes
-  @ingredient = Ingredient.find(params.fetch('id'))
   erb(:recipes)
 end
 

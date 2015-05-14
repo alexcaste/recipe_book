@@ -1,7 +1,7 @@
 <% if @ingredients.any? %>
   <h3>Here are all ingredients currently in your cook book</h3>
   <% @ingredients.each do |ing| %>
-    <li><a href ="/ingredients/<%= ing.ing_name %>/<%= ing.id %>"><%= ing.ing_name %></a>
+    <li><a href ="/recipes/<%= ing.id %>"><%= ing.ing_name %></a>
       &nbsp&nbsp&nbsp&nbsp
       <span class = "btn-group">
         <form action = "/ingredient/<%= ing.id %>" method = "post">
