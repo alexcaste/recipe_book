@@ -17,7 +17,7 @@
       <% @ingredients.each do |ingredient| %>
         <div class="checkbox">
           <label>
-          <input type="checkbox" name="ingredient_ids[]" value="<%= ingredient.id %>"><%= ingredient.ing_name %>
+          <input type="checkbox" name="ingredient_ids[]" checked_value="<%= ingredient.id %>" unchecked_value = "0"><%= ingredient.ing_name %>
           </label>
         </div>
       <% end %>
